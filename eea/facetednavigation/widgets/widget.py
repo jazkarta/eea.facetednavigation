@@ -181,7 +181,10 @@ class Widget(ATWidget):
             if language_widget:
                 return language_widget.default
         # Take value from request parameter, for example ?SearchableText=test.
-        from_request = self.request.form.pop(index, None)
+        if not isinstance(index, list):
+            from_request = self.request.form.pop(index, None)
+        else:
+            from_request = self.request.form.pop(index[0], None)
         if from_request is not None:
             return from_request
         return self.data.get('default', None)
