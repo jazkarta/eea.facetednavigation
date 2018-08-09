@@ -49,14 +49,20 @@ Faceted.RangeWidget.prototype = {
       return false;
     }
 
-    var value = [start, end];
-    if(end<start){
-      var msg = 'Invalid range';
+    if (isNaN(start) || isNaN(start)){
+      var msg = 'Invalid range - not a number';
       Faceted.Form.raise_error(msg, this.wid + '_errors', []);
-    }else{
-      this.selected = [this.start, this.end];
-      Faceted.Form.clear_errors(this.wid + '_errors', []);
-      Faceted.Form.do_query(this.wid, value);
+    }
+    else{
+      var value = [start, end];
+      if(parseInt(end)<parseInt(start)){
+        var msg = 'Invalid range';
+        Faceted.Form.raise_error(msg, this.wid + '_errors', []);
+      }else{
+        this.selected = [this.start, this.end];
+        Faceted.Form.clear_errors(this.wid + '_errors', []);
+        Faceted.Form.do_query(this.wid, value);
+      }
     }
   },
 
