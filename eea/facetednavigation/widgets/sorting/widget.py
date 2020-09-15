@@ -94,10 +94,11 @@ class Widget(AbstractWidget):
         """Return a list of available fields for sorting."""
 
         registry = getUtility(IRegistry)
-        config = IQuerystringRegistryReader(registry)()
-        indexes = config.get('sortable_indexes', {})
+        config = IQuerystringRegistryReader(registry)
+        indexes = config.parseRegistry()
+        sortable = config.mapSortableIndexes(indexes)['sortable']
 
-        for name, index in indexes.items():
+        for name, index in sortable.items():
             title = index.get('title', name)
             description = index.get('description', title)
             yield (name, title, description)
